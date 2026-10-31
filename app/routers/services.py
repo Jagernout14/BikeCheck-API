@@ -77,7 +77,7 @@ def update_service(
     changes = body.model_dump(exclude_unset=True)
     for required in ("done_at", "mileage_km"):
         if required in changes and changes[required] is None:
-            raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"{required} cannot be null")
+            raise HTTPException(422, f"{required} cannot be null")
     if "done_at" in changes:
         changes["done_at"] = changes["done_at"].isoformat()
     if changes:

@@ -71,7 +71,7 @@ def update_bike(
     _get_bike(db, bike_id, user["id"])
     changes = body.model_dump(exclude_unset=True)
     if "name" in changes and changes["name"] is None:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "name cannot be null")
+        raise HTTPException(422, "name cannot be null")
     if changes:
         sets = ", ".join(f"{k} = ?" for k in changes)
         db.execute(f"UPDATE bikes SET {sets} WHERE id = ?", [*changes.values(), bike_id])

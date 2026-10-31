@@ -94,7 +94,7 @@ def update_catalog_item(
         changes["needs_service"] = int(changes["needs_service"])
     for required in ("name", "category", "needs_service"):
         if required in changes and changes[required] is None:
-            raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, f"{required} cannot be null")
+            raise HTTPException(422, f"{required} cannot be null")
     if changes:
         sets = ", ".join(f"{k} = ?" for k in changes)
         db.execute(f"UPDATE catalog_components SET {sets} WHERE id = ?", [*changes.values(), item_id])

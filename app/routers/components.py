@@ -31,7 +31,7 @@ def update_component(
     changes = body.model_dump(exclude_unset=True)
     if "installed_at" in changes:
         if changes["installed_at"] is None:
-            raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "installed_at cannot be null")
+            raise HTTPException(422, "installed_at cannot be null")
         changes["installed_at"] = changes["installed_at"].isoformat()
     if changes:
         sets = ", ".join(f"{k} = ?" for k in changes)
@@ -75,7 +75,7 @@ def add_service(
 ):
     component = get_owned_component(db, component_id, user["id"])
     if not component["catalog"]["needs_service"]:
-        raise HTTPException(status.HTTP_422_UNPROCESSABLE_ENTITY, "This component does not need service")
+        raise HTTPException(422, "This component does not need service")
     cur = db.execute(
         "INSERT INTO services (component_id, done_at, mileage_km, note, created_at) VALUES (?, ?, ?, ?, ?)",
         (component_id, body.done_at.isoformat(), body.mileage_km, body.note, utc_now()),
