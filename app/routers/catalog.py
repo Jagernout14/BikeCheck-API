@@ -1,5 +1,6 @@
 """Shared component catalog: everyone can read and add; only the author edits/deletes."""
 
+from typing import Optional
 import sqlite3
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
@@ -25,8 +26,8 @@ def _require_author(row: sqlite3.Row, user_id: int) -> None:
 
 @router.get("", response_model=Page[CatalogOut])
 def list_catalog(
-    q: str | None = Query(default=None, max_length=100, description="Search in name and brand"),
-    category: Category | None = None,
+    q: Optional[str] = Query(default=None, max_length=100, description="Search in name and brand"),
+    category: Optional[Category] = None,
     limit: int = Query(default=20, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     user: sqlite3.Row = Depends(get_current_user),

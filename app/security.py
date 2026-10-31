@@ -1,5 +1,6 @@
 """Password hashing (PBKDF2 from the standard library) and JWT tokens."""
 
+from typing import Optional
 import base64
 import hashlib
 import hmac
@@ -49,7 +50,7 @@ def create_access_token(user_id: int) -> str:
     return jwt.encode(payload, SECRET_KEY, algorithm=ALGORITHM)
 
 
-def decode_access_token(token: str) -> int | None:
+def decode_access_token(token: str) -> Optional[int]:
     """Returns the user id, or None if the token is invalid or expired."""
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])

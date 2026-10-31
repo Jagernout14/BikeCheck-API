@@ -4,6 +4,7 @@ We use the standard library `sqlite3` module directly (no ORM) to keep
 the project small and the SQL easy to read.
 """
 
+from typing import Optional
 import os
 import sqlite3
 from collections.abc import Iterator
@@ -89,14 +90,14 @@ def utc_now() -> str:
     return datetime.now(timezone.utc).isoformat(timespec="seconds")
 
 
-def connect(path: str | None = None) -> sqlite3.Connection:
+def connect(path: Optional[str] = None) -> sqlite3.Connection:
     conn = sqlite3.connect(path or DB_PATH, check_same_thread=False)
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     return conn
 
 
-def init_db(path: str | None = None) -> None:
+def init_db(path: Optional[str] = None) -> None:
     conn = connect(path)
     try:
         conn.executescript(SCHEMA)

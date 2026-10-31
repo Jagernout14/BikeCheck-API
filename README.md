@@ -13,7 +13,7 @@ Built with **FastAPI + SQLite + JWT**. Written by Claude (Anthropic) as the serv
 
 ## Run locally
 
-Requires Python 3.10+.
+Requires Python 3.9+.
 
 ```bash
 python3 -m venv .venv

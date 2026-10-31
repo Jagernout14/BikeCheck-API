@@ -1,5 +1,6 @@
 """Shared dependencies and helpers used by the routers."""
 
+from typing import Optional
 import sqlite3
 
 from fastapi import Depends, HTTPException, status
@@ -12,7 +13,7 @@ _bearer = HTTPBearer(auto_error=False)
 
 
 def get_current_user(
-    creds: HTTPAuthorizationCredentials | None = Depends(_bearer),
+    creds: Optional[HTTPAuthorizationCredentials] = Depends(_bearer),
     db: sqlite3.Connection = Depends(get_db),
 ) -> sqlite3.Row:
     unauthorized = HTTPException(

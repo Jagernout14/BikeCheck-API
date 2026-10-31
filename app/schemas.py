@@ -1,7 +1,7 @@
 """Request and response models (what the iOS app sends and receives)."""
 
 from datetime import date, datetime
-from typing import Generic, Literal, TypeVar
+from typing import Generic, Literal, TypeVar, Optional
 
 from pydantic import BaseModel, Field
 
@@ -45,28 +45,28 @@ class TokenOut(BaseModel):
 
 class CatalogCreate(BaseModel):
     name: str = Field(min_length=1, max_length=100)
-    brand: str | None = Field(default=None, max_length=100)
+    brand: Optional[str] = Field(default=None, max_length=100)
     category: Category
-    weight_g: int | None = Field(default=None, ge=0, le=100_000)
+    weight_g: Optional[int] = Field(default=None, ge=0, le=100_000)
     needs_service: bool = True
 
 
 class CatalogUpdate(BaseModel):
-    name: str | None = Field(default=None, min_length=1, max_length=100)
-    brand: str | None = Field(default=None, max_length=100)
-    category: Category | None = None
-    weight_g: int | None = Field(default=None, ge=0, le=100_000)
-    needs_service: bool | None = None
+    name: Optional[str] = Field(default=None, min_length=1, max_length=100)
+    brand: Optional[str] = Field(default=None, max_length=100)
+    category: Optional[Category] = None
+    weight_g: Optional[int] = Field(default=None, ge=0, le=100_000)
+    needs_service: Optional[bool] = None
 
 
 class CatalogOut(BaseModel):
     id: int
     name: str
-    brand: str | None
+    brand: Optional[str]
     category: Category
-    weight_g: int | None
+    weight_g: Optional[int]
     needs_service: bool
-    author_id: int | None
+    author_id: Optional[int]
     is_mine: bool  # true -> the app can show Edit / Delete
     created_at: datetime
 
@@ -75,18 +75,18 @@ class CatalogOut(BaseModel):
 
 class BikeCreate(BaseModel):
     name: str = Field(min_length=1, max_length=100)
-    photo_url: str | None = Field(default=None, max_length=2048)
+    photo_url: Optional[str] = Field(default=None, max_length=2048)
 
 
 class BikeUpdate(BaseModel):
-    name: str | None = Field(default=None, min_length=1, max_length=100)
-    photo_url: str | None = Field(default=None, max_length=2048)
+    name: Optional[str] = Field(default=None, min_length=1, max_length=100)
+    photo_url: Optional[str] = Field(default=None, max_length=2048)
 
 
 class BikeOut(BaseModel):
     id: int
     name: str
-    photo_url: str | None
+    photo_url: Optional[str]
     component_count: int
     total_weight_g: int  # sum of known component weights
     created_at: datetime
@@ -97,21 +97,21 @@ class BikeOut(BaseModel):
 class ComponentCreate(BaseModel):
     catalog_id: int
     installed_at: date
-    note: str | None = Field(default=None, max_length=500)
+    note: Optional[str] = Field(default=None, max_length=500)
 
 
 class ComponentUpdate(BaseModel):
-    installed_at: date | None = None
-    note: str | None = Field(default=None, max_length=500)
+    installed_at: Optional[date] = None
+    note: Optional[str] = Field(default=None, max_length=500)
 
 
 class ComponentOut(BaseModel):
     id: int
     bike_id: int
     installed_at: date
-    note: str | None
-    last_service_at: date | None
-    last_service_mileage_km: int | None
+    note: Optional[str]
+    last_service_at: Optional[date]
+    last_service_mileage_km: Optional[int]
     catalog: CatalogOut
 
 
@@ -124,13 +124,13 @@ class BikeDetailOut(BikeOut):
 class ServiceCreate(BaseModel):
     done_at: date
     mileage_km: int = Field(ge=0, le=1_000_000)
-    note: str | None = Field(default=None, max_length=500)
+    note: Optional[str] = Field(default=None, max_length=500)
 
 
 class ServiceUpdate(BaseModel):
-    done_at: date | None = None
-    mileage_km: int | None = Field(default=None, ge=0, le=1_000_000)
-    note: str | None = Field(default=None, max_length=500)
+    done_at: Optional[date] = None
+    mileage_km: Optional[int] = Field(default=None, ge=0, le=1_000_000)
+    note: Optional[str] = Field(default=None, max_length=500)
 
 
 class ServiceOut(BaseModel):
@@ -138,7 +138,7 @@ class ServiceOut(BaseModel):
     component_id: int
     done_at: date
     mileage_km: int
-    note: str | None
+    note: Optional[str]
     created_at: datetime
 
 

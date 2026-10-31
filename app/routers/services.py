@@ -1,5 +1,6 @@
 """All of the user's service records (History tab) and editing single records."""
 
+from typing import Optional
 import sqlite3
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response, status
@@ -28,7 +29,7 @@ def _get_owned_service(db: sqlite3.Connection, service_id: int, user_id: int) ->
 
 @router.get("", response_model=Page[ServiceHistoryOut])
 def list_services(
-    bike_id: int | None = None,
+    bike_id: Optional[int] = None,
     limit: int = Query(default=20, ge=1, le=100),
     offset: int = Query(default=0, ge=0),
     user: sqlite3.Row = Depends(get_current_user),
